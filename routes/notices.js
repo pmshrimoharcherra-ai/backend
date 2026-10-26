@@ -3,31 +3,32 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
 import Notice from '../models/Notice.js';
+
+dotenv.config();
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
-// Ensure upload directory exists
+// Ensure upload directory exists for local fallback
 const uploadDir = path.join(__dirname, '../uploads/notices');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Multer Storage Configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    // Generate safe clean filename with timestamp
-    const cleanOriginal = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e6);
-    cb(null, `${uniquePrefix}_${cleanOriginal}`);
-  }
-});
+// Multer memory storage (keeps buffer in RAM for Cloudinary or disk fallback)
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   // Only accept PDF files
@@ -125,27 +126,28 @@ router.get('/:id/download', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Notice not found.' });
     }
 
-    // Determine path from stored pdfUrl or filename
-    let filePath = '';
-    if (notice.pdfUrl.includes('/uploads/notices/')) {
-      const filename = notice.pdfUrl.split('/uploads/notices/').pop();
-      filePath = path.join(uploadDir, filename);
-    } else {
-      filePath = path.join(uploadDir, notice.pdfFileName);
-    }
-
-    if (fs.existsSync(filePath)) {
-      return res.download(filePath, notice.pdfFileName || 'PM_SHRI_Notice.pdf');
-    }
-
-    // If external URL or file not on disk, redirect
-    if (notice.pdfUrl.startsWith('http')) {
+    // 1. If stored in Cloudinary or external HTTPS URL, redirect to CDN
+    if (notice.pdfUrl && (notice.pdfUrl.includes('cloudinary') || (!notice.pdfUrl.includes('localhost') && notice.pdfUrl.startsWith('http')))) {
       return res.redirect(notice.pdfUrl);
     }
 
+    // 2. Check if file is stored locally in uploads/notices
+    let filePath = '';
+    if (notice.pdfUrl && notice.pdfUrl.includes('/uploads/notices/')) {
+      const filename = notice.pdfUrl.split('/uploads/notices/').pop();
+      filePath = path.join(uploadDir, filename);
+    } else if (notice.pdfFileName) {
+      filePath = path.join(uploadDir, notice.pdfFileName);
+    }
+
+    if (filePath && fs.existsSync(filePath)) {
+      return res.download(filePath, notice.pdfFileName || 'PM_SHRI_Notice.pdf');
+    }
+
+    // 3. If file not found and URL is localhost, do NOT redirect to broken localhost
     return res.status(404).json({
       success: false,
-      message: 'Notice PDF file not found on server.'
+      message: 'Notice PDF file not found on server or storage.'
     });
   } catch (err) {
     console.error('Error initiating download:', err);
@@ -187,12 +189,49 @@ router.post('/', upload.single('noticePdf'), async (req, res) => {
     let pdfFileSize = 'PDF Document';
 
     if (req.file) {
-      // Local uploaded file
-      const host = req.get('host') || 'localhost:5000';
-      const protocol = req.protocol || 'http';
-      pdfUrl = `${protocol}://${host}/uploads/notices/${req.file.filename}`;
       pdfFileName = req.file.originalname;
       pdfFileSize = formatFileSize(req.file.size);
+
+      // Attempt upload to Cloudinary (permanent storage for Render/cloud)
+      if (process.env.CLOUDINARY_CLOUD_NAME) {
+        try {
+          const uploadToCloudinary = (buffer) => {
+            return new Promise((resolve, reject) => {
+              const stream = cloudinary.uploader.upload_stream(
+                {
+                  folder: 'pm_shri_school/notices',
+                  resource_type: 'raw',
+                  use_filename: true,
+                  unique_filename: true
+                },
+                (error, result) => {
+                  if (error) return reject(error);
+                  resolve(result);
+                }
+              );
+              stream.end(buffer);
+            });
+          };
+
+          const cloudRes = await uploadToCloudinary(req.file.buffer);
+          pdfUrl = cloudRes.secure_url;
+        } catch (cloudErr) {
+          console.warn('Cloudinary upload failed, falling back to local disk:', cloudErr.message);
+        }
+      }
+
+      // Local disk fallback if Cloudinary was not used or failed
+      if (!pdfUrl) {
+        const cleanOriginal = req.file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e6);
+        const filename = `${uniquePrefix}_${cleanOriginal}`;
+        const localPath = path.join(uploadDir, filename);
+        fs.writeFileSync(localPath, req.file.buffer);
+
+        const host = req.get('host') || 'localhost:5000';
+        const protocol = req.protocol || 'http';
+        pdfUrl = `${protocol}://${host}/uploads/notices/${filename}`;
+      }
     } else if (req.body.pdfUrl) {
       pdfUrl = req.body.pdfUrl;
       pdfFileName = req.body.pdfFileName || 'Notice.pdf';
