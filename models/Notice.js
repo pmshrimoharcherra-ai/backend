@@ -40,6 +40,10 @@ const noticeSchema = new mongoose.Schema(
       type: String,
       default: 'PDF Document'
     },
+    pdfData: {
+      type: String,
+      default: ''
+    },
     pinned: {
       type: Boolean,
       default: false

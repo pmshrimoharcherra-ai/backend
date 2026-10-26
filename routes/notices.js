@@ -126,9 +126,13 @@ router.get('/:id/download', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Notice not found.' });
     }
 
-    // 1. If stored in Cloudinary or external HTTPS URL, redirect to CDN
-    if (notice.pdfUrl && (notice.pdfUrl.includes('cloudinary') || (!notice.pdfUrl.includes('localhost') && notice.pdfUrl.startsWith('http')))) {
-      return res.redirect(notice.pdfUrl);
+    // 1. Direct MongoDB PDF stream (100% reliable, permanent, bypasses external 401 ACL)
+    if (notice.pdfData) {
+      const buffer = Buffer.from(notice.pdfData, 'base64');
+      const filename = notice.pdfFileName || 'PM_SHRI_Notice.pdf';
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
+      return res.send(buffer);
     }
 
     // 2. Check if file is stored locally in uploads/notices
@@ -142,6 +146,11 @@ router.get('/:id/download', async (req, res) => {
 
     if (filePath && fs.existsSync(filePath)) {
       return res.download(filePath, notice.pdfFileName || 'PM_SHRI_Notice.pdf');
+    }
+
+    // 3. If stored in external HTTPS URL, redirect to CDN
+    if (notice.pdfUrl && !notice.pdfUrl.includes('localhost') && notice.pdfUrl.startsWith('http')) {
+      return res.redirect(notice.pdfUrl);
     }
 
     // 3. If file not found and URL is localhost, do NOT redirect to broken localhost
@@ -255,6 +264,7 @@ router.post('/', upload.single('noticePdf'), async (req, res) => {
       pdfUrl,
       pdfFileName,
       pdfFileSize,
+      pdfData: req.file ? req.file.buffer.toString('base64') : '',
       pinned: pinned === 'true' || pinned === true,
       description: description ? description.trim() : ''
     });
