@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Runtime & Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Uploads (keep folder structure, exclude dynamic files)
+uploads/*
+!uploads/notices/
+uploads/notices/*
+!uploads/notices/.gitkeep
+
+# Build artifacts
+dist/
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
