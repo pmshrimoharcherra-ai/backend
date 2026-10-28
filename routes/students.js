@@ -86,7 +86,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/students - Create new student
 router.post('/', async (req, res) => {
   try {
-    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, enrollmentYear, gender } = req.body;
+    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address } = req.body;
 
     if (!name || !classId || !roll) {
       return res.status(400).json({
@@ -128,6 +128,10 @@ router.post('/', async (req, res) => {
       father: father?.trim() || '',
       mother: mother?.trim() || '',
       aadhaar: aadhaar?.trim() || '',
+      caste: caste?.trim() || '',
+      admissionDate: admissionDate?.trim() || '',
+      admissionNo: admissionNo?.trim() || '',
+      address: address?.trim() || '',
       penNumber: penNumber?.trim() || '',
       apaarId: apaarId?.trim() || '',
       dob: dob?.trim() || '',
@@ -200,7 +204,7 @@ router.put('/bulk-attendance', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, enrollmentYear, gender } = req.body;
+    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address } = req.body;
 
     let student = await Student.findOne({ studentId: id });
     if (!student && id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -226,6 +230,10 @@ router.put('/:id', async (req, res) => {
     if (father !== undefined) student.father = father.trim();
     if (mother !== undefined) student.mother = mother.trim();
     if (aadhaar !== undefined) student.aadhaar = aadhaar.trim();
+    if (caste !== undefined) student.caste = caste.trim();
+    if (admissionDate !== undefined) student.admissionDate = admissionDate.trim();
+    if (admissionNo !== undefined) student.admissionNo = admissionNo.trim();
+    if (address !== undefined) student.address = address.trim();
     if (penNumber !== undefined) student.penNumber = penNumber.trim();
     if (apaarId !== undefined) student.apaarId = apaarId.trim();
     if (dob !== undefined) student.dob = dob.trim();

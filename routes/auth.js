@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid password. Password format is FirstName + Subject (e.g. JoydebPhysics).'
+          message: 'Invalid password. Please check your credentials.'
         });
       }
 

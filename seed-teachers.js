@@ -168,13 +168,13 @@ export const OFFICIAL_TEACHERS = [
     slNo: 14, 
     teacherId: 'TP43381101', 
     name: 'Debamoy Chakraborty', 
-    role: 'Faculty Member', 
-    subject: 'Sanskrit & Indian Knowledge Systems', 
-    department: 'Humanities & Classical Studies', 
-    email: 'debamoy.c@pmshri.ac.in', 
-    phone: '+91 94361 00214',
+    role: 'PGT', 
+    subject: 'Chemistry', 
+    department: 'Science & Chemistry', 
+    email: 'debacha008@gmail.com', 
+    phone: '+91 9436501316',
     status: 'Active Faculty',
-    qualification: 'M.A. (Sanskrit), B.Ed.'
+    qualification: 'M.Sc. (Chemistry), B.Ed.'
   },
   { 
     slNo: 15, 

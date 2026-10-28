@@ -112,6 +112,26 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: '2026',
       trim: true
+    },
+    caste: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    admissionDate: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    admissionNo: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    address: {
+      type: String,
+      default: '',
+      trim: true
     }
   },
   {
