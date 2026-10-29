@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import dns from 'dns';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.js';
 import studentRoutes from './routes/students.js';
@@ -11,6 +12,11 @@ import galleryRoutes from './routes/gallery.js';
 import teacherRoutes from './routes/teachers.js';
 import noticeRoutes from './routes/notices.js';
 import examinationRoutes from './routes/examinations.js';
+
+// Force Node.js to prioritize IPv4 over IPv6 to prevent MongoDB Atlas ETIMEDOUT on NAT64/dual-stack networks
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,16 +60,33 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Auto-reconnection and connection lifecycle monitoring
+mongoose.connection.on('disconnected', () => {
+  console.warn('⚠️ MongoDB connection lost. Attempting auto-reconnect in 5s...');
+  setTimeout(connectDB, 5000);
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB Connection Error event:', err.message);
+});
+
 // MongoDB Connection
 const connectDB = async () => {
+  if (mongoose.connection.readyState === 1) return;
   try {
     if (!MONGO_URI) {
       throw new Error('MONGODB_URI is not defined in .env');
     }
-    await mongoose.connect(MONGO_URI, { dbName: DB_NAME });
+    await mongoose.connect(MONGO_URI, {
+      dbName: DB_NAME,
+      serverSelectionTimeoutMS: 8000,
+      family: 4 // Force IPv4 to prevent IPv6 NAT64 timeouts
+    });
     console.log(` MongoDB Connected Successfully to "${mongoose.connection.name}"!`);
   } catch (error) {
     console.error(` MongoDB Connection Error: ${error.message}`);
+    // Auto-retry connection after 5 seconds if initial connect fails
+    setTimeout(connectDB, 5000);
   }
 };
 
