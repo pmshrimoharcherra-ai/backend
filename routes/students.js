@@ -32,7 +32,10 @@ router.get('/', async (req, res) => {
         { penNumber: regex },
         { apaarId: regex },
         { dob: regex },
-        { phone: regex }
+        { phone: regex },
+        { caste: regex },
+        { admissionNo: regex },
+        { address: regex }
       ];
     }
 
