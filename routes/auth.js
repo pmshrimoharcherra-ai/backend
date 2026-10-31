@@ -347,4 +347,180 @@ router.get('/me', async (req, res) => {
   }
 });
 
+// Normalization Helpers for Student Search & Verification
+const normalizeDate = (dStr) => {
+  if (!dStr) return '';
+  const clean = String(dStr).trim();
+  const ymdMatch = clean.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})$/);
+  if (ymdMatch) {
+    const y = parseInt(ymdMatch[1], 10);
+    const m = parseInt(ymdMatch[2], 10);
+    const d = parseInt(ymdMatch[3], 10);
+    return `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`;
+  }
+  const dmyMatch = clean.match(/^(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})$/);
+  if (dmyMatch) {
+    const d = parseInt(dmyMatch[1], 10);
+    const m = parseInt(dmyMatch[2], 10);
+    const y = parseInt(dmyMatch[3], 10);
+    return `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${y}`;
+  }
+  return clean.replace(/[-.]/g, '/');
+};
+
+const normalizeName = (s) => {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
+};
+
+const matchRoll = (r1, r2) => {
+  const n1 = parseInt(String(r1).replace(/[^0-9]/g, ''), 10);
+  const n2 = parseInt(String(r2).replace(/[^0-9]/g, ''), 10);
+  return !isNaN(n1) && !isNaN(n2) && n1 === n2;
+};
+
+// POST /api/auth/student-find-id (Forgot APAAR ID / PEN Number)
+router.post('/student-find-id', async (req, res) => {
+  try {
+    const { name, roll, classId, dob } = req.body;
+    if (!name || !roll || !classId || !dob) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide Student Name, Roll Number, Class, and Date of Birth.'
+      });
+    }
+
+    const normInputName = normalizeName(name);
+    const normInputDob = normalizeDate(dob);
+    const inputRoman = getClassRoman(classId, classId);
+
+    const candidates = await Student.find({
+      $or: [
+        { classId: classId },
+        { className: new RegExp(classId, 'i') },
+        { classId: new RegExp(classId.replace(/[^0-9]/g, ''), 'i') }
+      ]
+    });
+
+    const studentPool = candidates.length > 0 ? candidates : await Student.find({});
+
+    const matched = studentPool.find(st => {
+      if (!matchRoll(st.roll, roll)) return false;
+
+      const stRoman = getClassRoman(st.classId, st.className);
+      if (inputRoman && stRoman && inputRoman !== stRoman) return false;
+
+      const stNormName = normalizeName(st.name);
+      const nameMatches = stNormName === normInputName ||
+        stNormName.includes(normInputName) ||
+        normInputName.includes(stNormName);
+      if (!nameMatches) return false;
+
+      const stNormDob = normalizeDate(st.dob);
+      if (stNormDob && normInputDob && stNormDob !== normInputDob) return false;
+
+      return true;
+    });
+
+    if (!matched) {
+      return res.status(404).json({
+        success: false,
+        message: 'No matching student record found. Please verify your Name, Roll Number, Class, and Date of Birth match school records.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Student record found!',
+      student: {
+        name: matched.name,
+        apaarId: matched.apaarId || 'Not Available (Please contact school desk)',
+        penNumber: matched.penNumber || 'Not Available',
+        dob: matched.dob || normInputDob,
+        father: matched.father || matched.guardian || 'Not Available',
+        mother: matched.mother || 'Not Available',
+        className: matched.className,
+        roll: matched.roll
+      }
+    });
+  } catch (error) {
+    console.error('Find Student ID error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while searching for student identity.'
+    });
+  }
+});
+
+// POST /api/auth/student-forgot-password (Forgot Password)
+router.post('/student-forgot-password', async (req, res) => {
+  try {
+    const { classId, roll, father, dob } = req.body;
+    if (!classId || !roll || !father || !dob) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide Class, Roll Number, Father's Name, and Date of Birth."
+      });
+    }
+
+    const normInputFather = normalizeName(father);
+    const normInputDob = normalizeDate(dob);
+    const inputRoman = getClassRoman(classId, classId);
+
+    const candidates = await Student.find({
+      $or: [
+        { classId: classId },
+        { className: new RegExp(classId, 'i') },
+        { classId: new RegExp(classId.replace(/[^0-9]/g, ''), 'i') }
+      ]
+    });
+
+    const studentPool = candidates.length > 0 ? candidates : await Student.find({});
+
+    const matched = studentPool.find(st => {
+      if (!matchRoll(st.roll, roll)) return false;
+
+      const stRoman = getClassRoman(st.classId, st.className);
+      if (inputRoman && stRoman && inputRoman !== stRoman) return false;
+
+      const stFatherNorm = normalizeName(st.father);
+      const stGuardNorm = normalizeName(st.guardian);
+      const fatherMatches =
+        (stFatherNorm && (stFatherNorm === normInputFather || stFatherNorm.includes(normInputFather) || normInputFather.includes(stFatherNorm))) ||
+        (stGuardNorm && (stGuardNorm === normInputFather || stGuardNorm.includes(normInputFather) || normInputFather.includes(stGuardNorm)));
+
+      if (!fatherMatches) return false;
+
+      const stNormDob = normalizeDate(st.dob);
+      if (stNormDob && normInputDob && stNormDob !== normInputDob) return false;
+
+      return true;
+    });
+
+    if (!matched) {
+      return res.status(404).json({
+        success: false,
+        message: "No matching record found. Please verify your Class, Roll Number, Father's Name, and Date of Birth."
+      });
+    }
+
+    const studentPassword = matched.password || computeStudentPassword(matched.name, matched.roll, matched.classId, matched.className);
+
+    return res.json({
+      success: true,
+      message: 'Student verified successfully!',
+      studentName: matched.name,
+      className: matched.className,
+      roll: matched.roll,
+      apaarId: matched.apaarId || matched.penNumber || '',
+      password: studentPassword
+    });
+  } catch (error) {
+    console.error('Student forgot password error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while verifying credentials.'
+    });
+  }
+});
+
 export default router;
