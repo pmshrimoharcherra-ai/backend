@@ -591,6 +591,47 @@ router.post('/upload', upload.single('mediaFile'), async (req, res) => {
   }
 });
 
+// PUT /api/gallery/items/:id - Update media title, caption, or folder
+router.put('/items/:id', async (req, res) => {
+  try {
+    const { title, caption, folderId } = req.body;
+    const item = await GalleryItem.findById(req.params.id);
+    if (!item) {
+      return res.status(404).json({ message: 'Media item not found' });
+    }
+
+    if (title !== undefined) item.title = title.trim();
+    if (caption !== undefined) item.caption = caption.trim();
+
+    if (folderId && folderId !== item.folderId.toString()) {
+      const newFolder = await GalleryFolder.findById(folderId);
+      if (newFolder) {
+        // Adjust counts
+        const oldCount = await GalleryItem.countDocuments({ folderId: item.folderId });
+        await GalleryFolder.findByIdAndUpdate(item.folderId, {
+          itemCount: Math.max(0, oldCount - 1)
+        });
+        const newCount = await GalleryItem.countDocuments({ folderId });
+        await GalleryFolder.findByIdAndUpdate(folderId, {
+          itemCount: newCount + 1
+        });
+        item.folderId = newFolder._id;
+        item.folderName = newFolder.name;
+      }
+    }
+
+    const updatedItem = await item.save();
+    res.json({
+      success: true,
+      message: 'Media details updated successfully',
+      item: updatedItem
+    });
+  } catch (error) {
+    console.error('Error updating media item:', error);
+    res.status(500).json({ message: 'Error updating media item', error: error.message });
+  }
+});
+
 // DELETE /api/gallery/items/:id - Delete a media item
 router.delete('/items/:id', async (req, res) => {
   try {
