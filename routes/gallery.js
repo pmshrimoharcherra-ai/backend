@@ -248,13 +248,14 @@ router.get('/folders', async (req, res) => {
 
         let cover = folder.coverImage;
         if (!cover || cover === '') {
-          let latestItem = await GalleryItem.findOne({ folderId: folder._id, mediaType: 'image' }).sort({ createdAt: -1 });
-          if (!latestItem && subfolderCount > 0) {
+          // Fallback to the first image uploaded into this folder
+          let firstItem = await GalleryItem.findOne({ folderId: folder._id, mediaType: 'image' }).sort({ createdAt: 1 });
+          if (!firstItem && subfolderCount > 0) {
             const subfolders = await GalleryFolder.find({ parentId: folder._id }, '_id');
             const subfolderIds = subfolders.map((sf) => sf._id);
-            latestItem = await GalleryItem.findOne({ folderId: { $in: subfolderIds }, mediaType: 'image' }).sort({ createdAt: -1 });
+            firstItem = await GalleryItem.findOne({ folderId: { $in: subfolderIds }, mediaType: 'image' }).sort({ createdAt: 1 });
           }
-          if (latestItem) cover = latestItem.url;
+          if (firstItem) cover = firstItem.url;
         }
         return {
           ...folder.toJSON(),
@@ -561,13 +562,23 @@ router.post('/upload', upload.single('mediaFile'), async (req, res) => {
 
     const savedItem = await newItem.save();
 
-    // Update folder item count and cover if empty
+    // Update folder item count and cover if empty (first image becomes thumbnail)
     const currentCount = await GalleryItem.countDocuments({ folderId: targetFolder._id });
     const updateFolder = { itemCount: currentCount };
-    if (!targetFolder.coverImage && mediaType === 'image') {
+    if ((!targetFolder.coverImage || targetFolder.coverImage === '') && mediaType === 'image') {
       updateFolder.coverImage = cloudRes.secure_url;
     }
     await GalleryFolder.findByIdAndUpdate(targetFolder._id, updateFolder);
+
+    // If this was inside a subfolder and parent folder has no cover, also update parent
+    if (targetFolder.parentId && mediaType === 'image') {
+      const parentFolder = await GalleryFolder.findById(targetFolder.parentId);
+      if (parentFolder && (!parentFolder.coverImage || parentFolder.coverImage === '')) {
+        await GalleryFolder.findByIdAndUpdate(targetFolder.parentId, {
+          coverImage: cloudRes.secure_url
+        });
+      }
+    }
 
     res.status(201).json({
       success: true,
@@ -602,9 +613,21 @@ router.delete('/items/:id', async (req, res) => {
     // Delete from MongoDB
     await GalleryItem.findByIdAndDelete(req.params.id);
 
-    // Update folder count
+    // Update folder count and cover if the deleted item was the cover
     const remainingCount = await GalleryItem.countDocuments({ folderId: item.folderId });
-    await GalleryFolder.findByIdAndUpdate(item.folderId, { itemCount: remainingCount });
+    const targetFolder = await GalleryFolder.findById(item.folderId);
+    if (targetFolder && targetFolder.coverImage === item.url) {
+      const nextFirstImage = await GalleryItem.findOne({
+        folderId: item.folderId,
+        mediaType: 'image'
+      }).sort({ createdAt: 1 });
+      await GalleryFolder.findByIdAndUpdate(item.folderId, {
+        itemCount: remainingCount,
+        coverImage: nextFirstImage ? nextFirstImage.url : ''
+      });
+    } else {
+      await GalleryFolder.findByIdAndUpdate(item.folderId, { itemCount: remainingCount });
+    }
 
     res.json({ message: 'Media item deleted successfully', id: req.params.id });
   } catch (error) {
