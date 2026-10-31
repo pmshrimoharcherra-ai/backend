@@ -34,6 +34,16 @@ const galleryFolderSchema = new mongoose.Schema(
       type: String,
       default: 'Clubs & Activities',
       trim: true
+    },
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'GalleryFolder',
+      default: null
+    },
+    parentName: {
+      type: String,
+      default: '',
+      trim: true
     }
   },
   {

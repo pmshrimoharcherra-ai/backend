@@ -216,24 +216,51 @@ const ensureDefaultsSeeded = async () => {
 // 1. FOLDER ENDPOINTS
 // ==========================================
 
-// GET /api/gallery/folders - List all folders
+// GET /api/gallery/folders - List all folders (supports optional ?parentId filter)
 router.get('/folders', async (req, res) => {
   try {
     await ensureDefaultsSeeded();
-    const folders = await GalleryFolder.find().sort({ createdAt: -1 });
+    const { parentId } = req.query;
+    const filter = {};
+    if (parentId !== undefined) {
+      if (parentId === 'root' || parentId === 'null' || parentId === '') {
+        filter.parentId = null;
+      } else {
+        filter.parentId = parentId;
+      }
+    }
+
+    const folders = await GalleryFolder.find(filter).sort({ createdAt: -1 });
 
     // Ensure item counts & covers stay strictly accurate
     const foldersWithCounts = await Promise.all(
       folders.map(async (folder) => {
-        const count = await GalleryItem.countDocuments({ folderId: folder._id });
+        const directCount = await GalleryItem.countDocuments({ folderId: folder._id });
+        const subfolderCount = await GalleryFolder.countDocuments({ parentId: folder._id });
+
+        let totalItemsCount = directCount;
+        if (subfolderCount > 0) {
+          const subfolders = await GalleryFolder.find({ parentId: folder._id }, '_id');
+          const subfolderIds = subfolders.map((sf) => sf._id);
+          const subItemsCount = await GalleryItem.countDocuments({ folderId: { $in: subfolderIds } });
+          totalItemsCount = directCount + subItemsCount;
+        }
+
         let cover = folder.coverImage;
         if (!cover || cover === '') {
-          const latestItem = await GalleryItem.findOne({ folderId: folder._id, mediaType: 'image' }).sort({ createdAt: -1 });
+          let latestItem = await GalleryItem.findOne({ folderId: folder._id, mediaType: 'image' }).sort({ createdAt: -1 });
+          if (!latestItem && subfolderCount > 0) {
+            const subfolders = await GalleryFolder.find({ parentId: folder._id }, '_id');
+            const subfolderIds = subfolders.map((sf) => sf._id);
+            latestItem = await GalleryItem.findOne({ folderId: { $in: subfolderIds }, mediaType: 'image' }).sort({ createdAt: -1 });
+          }
           if (latestItem) cover = latestItem.url;
         }
         return {
           ...folder.toJSON(),
-          itemCount: count,
+          itemCount: directCount,
+          totalItemsCount,
+          subfolderCount,
           coverImage: cover || 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1200&q=80'
         };
       })
@@ -246,10 +273,10 @@ router.get('/folders', async (req, res) => {
   }
 });
 
-// POST /api/gallery/folders - Create new folder
+// POST /api/gallery/folders - Create new folder or subfolder
 router.post('/folders', async (req, res) => {
   try {
-    const { name, description, coverImage, category } = req.body;
+    const { name, description, coverImage, category, parentId } = req.body;
     if (!name || !name.trim()) {
       return res.status(400).json({ message: 'Folder name is required' });
     }
@@ -270,6 +297,11 @@ router.post('/folders', async (req, res) => {
       counter++;
     }
 
+    let parentFolder = null;
+    if (parentId && parentId !== 'null' && parentId !== 'root') {
+      parentFolder = await GalleryFolder.findById(parentId);
+    }
+
     const folder = new GalleryFolder({
       name: trimmedName,
       slug,
@@ -277,7 +309,9 @@ router.post('/folders', async (req, res) => {
       coverImage: coverImage ? coverImage.trim() : '',
       itemCount: 0,
       academicYear: '2026-2027',
-      category: category ? category.trim() : 'Clubs & Activities'
+      category: category ? category.trim() : (parentFolder ? parentFolder.category : 'Clubs & Activities'),
+      parentId: parentFolder ? parentFolder._id : null,
+      parentName: parentFolder ? parentFolder.name : ''
     });
 
     const saved = await folder.save();
@@ -392,7 +426,7 @@ router.post('/folders/:id/cover', upload.single('coverImage'), async (req, res) 
   }
 });
 
-// DELETE /api/gallery/folders/:id - Delete folder and all its media items
+// DELETE /api/gallery/folders/:id - Delete folder (and any subfolders) and their media items
 router.delete('/folders/:id', async (req, res) => {
   try {
     const folder = await GalleryFolder.findById(req.params.id);
@@ -400,8 +434,12 @@ router.delete('/folders/:id', async (req, res) => {
       return res.status(404).json({ message: 'Folder not found' });
     }
 
-    // Find all items in folder to delete from Cloudinary
-    const items = await GalleryItem.find({ folderId: req.params.id });
+    // Find all subfolders under this folder
+    const subfolders = await GalleryFolder.find({ parentId: req.params.id });
+    const allFolderIds = [req.params.id, ...subfolders.map((sf) => sf._id)];
+
+    // Find all items in folder and any subfolders to delete from Cloudinary
+    const items = await GalleryItem.find({ folderId: { $in: allFolderIds } });
     for (const item of items) {
       if (item.publicId && !item.publicId.startsWith('default_')) {
         try {
@@ -415,10 +453,10 @@ router.delete('/folders/:id', async (req, res) => {
     }
 
     // Remove from MongoDB
-    await GalleryItem.deleteMany({ folderId: req.params.id });
-    await GalleryFolder.findByIdAndDelete(req.params.id);
+    await GalleryItem.deleteMany({ folderId: { $in: allFolderIds } });
+    await GalleryFolder.deleteMany({ _id: { $in: allFolderIds } });
 
-    res.json({ message: `Folder "${folder.name}" and its ${items.length} items removed successfully.` });
+    res.json({ message: `Folder "${folder.name}" and all contents removed successfully.` });
   } catch (error) {
     console.error('Error deleting folder:', error);
     res.status(500).json({ message: 'Error deleting folder', error: error.message });
@@ -429,15 +467,21 @@ router.delete('/folders/:id', async (req, res) => {
 // 2. MEDIA ITEMS ENDPOINTS
 // ==========================================
 
-// GET /api/gallery/items - List media items (filter by folderId, mediaType)
+// GET /api/gallery/items - List media items (filter by folderId, mediaType, includeSubfolders)
 router.get('/items', async (req, res) => {
   try {
     await ensureDefaultsSeeded();
-    const { folderId, mediaType, limit } = req.query;
+    const { folderId, mediaType, limit, includeSubfolders } = req.query;
     const filter = {};
 
     if (folderId && folderId !== 'all') {
-      filter.folderId = folderId;
+      if (includeSubfolders === 'true') {
+        const subfolders = await GalleryFolder.find({ parentId: folderId }, '_id');
+        const allIds = [folderId, ...subfolders.map((sf) => sf._id)];
+        filter.folderId = { $in: allIds };
+      } else {
+        filter.folderId = folderId;
+      }
     }
     if (mediaType && mediaType !== 'all') {
       filter.mediaType = mediaType;
