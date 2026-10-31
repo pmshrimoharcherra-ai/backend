@@ -63,6 +63,7 @@ router.post('/save', async (req, res) => {
       teacherName: teacherName || 'Faculty Member',
       marks: Array.isArray(marks) ? marks : [],
       academicYear: academicYear || '2026-2027',
+      isLocked: req.body.isLocked !== undefined ? req.body.isLocked : true,
       submittedAt: new Date()
     };
 

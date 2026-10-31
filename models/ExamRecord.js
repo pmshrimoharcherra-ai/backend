@@ -48,6 +48,10 @@ const examRecordSchema = new mongoose.Schema(
       type: String,
       default: '2026-2027'
     },
+    isLocked: {
+      type: Boolean,
+      default: true
+    },
     marks: [studentMarkSchema],
     submittedAt: {
       type: Date,

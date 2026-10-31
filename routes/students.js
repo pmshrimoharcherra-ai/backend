@@ -174,7 +174,8 @@ router.put('/bulk-attendance', async (req, res) => {
     }
 
     const operations = updatedList.map((st) => {
-      const query = st.studentId ? { studentId: st.studentId } : { studentId: st.id };
+      const sId = st.studentId || (typeof st.id === 'string' && !st.id.match(/^[0-9a-fA-F]{24}$/) ? st.id : null);
+      const query = sId ? { studentId: sId } : (st._id || (st.id && st.id.match(/^[0-9a-fA-F]{24}$/)) ? { _id: st._id || st.id } : { studentId: st.id || st.studentId });
       const updateData = {};
       if (st.attendance !== undefined) updateData.attendance = st.attendance;
       if (st.monthlyAttendance) updateData.monthlyAttendance = st.monthlyAttendance;

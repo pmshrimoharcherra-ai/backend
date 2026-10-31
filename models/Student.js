@@ -132,6 +132,11 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: '',
       trim: true
+    },
+    password: {
+      type: String,
+      default: '',
+      trim: true
     }
   },
   {
@@ -159,5 +164,33 @@ studentSchema.pre('save', function (next) {
 });
 
 const Student = mongoose.model('Student', studentSchema);
+
+// Helper to convert class to Roman numeral string
+export const getClassRoman = (classId = '', className = '') => {
+  const str = `${classId} ${className}`.toLowerCase();
+  if (str.includes('12') || str.includes('xii')) return 'XII';
+  if (str.includes('11') || str.includes('xi')) return 'XI';
+  if (str.includes('10') || str.includes('class x') || str.endsWith(' x') || str === 'x') return 'X';
+  if (str.includes('9') || str.includes('ix')) return 'IX';
+  if (str.includes('8') || str.includes('viii')) return 'VIII';
+  if (str.includes('7') || str.includes('vii')) return 'VII';
+  if (str.includes('6') || str.includes('vi')) return 'VI';
+  if (str.includes('5') || str.includes('class v') || str.endsWith(' v') || str === 'v') return 'V';
+  if (str.includes('4') || str.includes('iv')) return 'IV';
+  if (str.includes('3') || str.includes('iii')) return 'III';
+  if (str.includes('2') || str.includes('ii')) return 'II';
+  if (str.includes('1') || str.includes('class i') || str.endsWith(' i') || str === 'i') return 'I';
+  return 'X';
+};
+
+// Helper to compute default student password: FirstName + 2-digit Roll + ClassRoman (e.g. Kiran01IX)
+export const computeStudentPassword = (name, roll, classId, className) => {
+  if (!name) return '';
+  const firstName = name.trim().split(/\s+/)[0];
+  const capFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+  const rollStr = String(roll || '1').trim().replace(/[^0-9]/g, '').padStart(2, '0');
+  const classRoman = getClassRoman(classId, className);
+  return `${capFirstName}${rollStr}${classRoman}`;
+};
 
 export default Student;
