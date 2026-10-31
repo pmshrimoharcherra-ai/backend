@@ -13,7 +13,15 @@ router.get('/', async (req, res) => {
     const filter = {};
 
     if (classId) {
-      filter.classId = classId;
+      if (classId.includes(',')) {
+        filter.classId = { $in: classId.split(',').map(s => s.trim()) };
+      } else if (classId === 'class-11' || classId === 'class-11-arts' || classId === 'class-11-sci') {
+        filter.classId = { $in: ['class-11', 'class-11-arts', 'class-11-sci'] };
+      } else if (classId === 'class-12' || classId === 'class-12-arts' || classId === 'class-12-sci') {
+        filter.classId = { $in: ['class-12', 'class-12-arts', 'class-12-sci'] };
+      } else {
+        filter.classId = classId;
+      }
     }
 
     if (search && search.trim()) {

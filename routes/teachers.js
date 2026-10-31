@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import Teacher, { computeTeacherPassword } from '../models/Teacher.js';
 
 const router = express.Router();
@@ -23,10 +24,11 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     let teacher = null;
-    if (id.startsWith('TR') || id.startsWith('TP')) {
-      teacher = await Teacher.findOne({ teacherId: id.toUpperCase() });
-    } else {
+    if (mongoose.Types.ObjectId.isValid(id)) {
       teacher = await Teacher.findById(id);
+    }
+    if (!teacher) {
+      teacher = await Teacher.findOne({ teacherId: id.toUpperCase() });
     }
 
     if (!teacher) {
@@ -93,7 +95,10 @@ router.put('/:id', async (req, res) => {
       updateData.teacherId = updateData.teacherId.trim().toUpperCase();
     }
 
-    let teacher = await Teacher.findById(id);
+    let teacher = null;
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      teacher = await Teacher.findById(id);
+    }
     if (!teacher) {
       teacher = await Teacher.findOne({ teacherId: id.toUpperCase() });
     }
