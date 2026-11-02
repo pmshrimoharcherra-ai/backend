@@ -97,7 +97,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/students - Create new student
 router.post('/', async (req, res) => {
   try {
-    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address } = req.body;
+    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
 
     if (!name || !classId || !roll) {
       return res.status(400).json({
@@ -149,7 +149,8 @@ router.post('/', async (req, res) => {
       phone: phone?.trim() || '',
       attendance: attendance || '100%',
       status: status || 'Enrolled',
-      monthlyAttendance: {}
+      monthlyAttendance: {},
+      subjects: Array.isArray(subjects) ? subjects : []
     });
 
     await newStudent.save();
@@ -216,7 +217,7 @@ router.put('/bulk-attendance', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address } = req.body;
+    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
 
     let student = await Student.findOne({ studentId: id });
     if (!student && id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -255,6 +256,7 @@ router.put('/:id', async (req, res) => {
     if (monthlyAttendance !== undefined) student.monthlyAttendance = monthlyAttendance;
     if (enrollmentNo !== undefined) student.enrollmentNo = enrollmentNo.trim();
     if (enrollmentYear !== undefined) student.enrollmentYear = enrollmentYear.trim();
+    if (subjects !== undefined && Array.isArray(subjects)) student.subjects = subjects;
 
     await student.save();
 
