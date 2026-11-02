@@ -137,6 +137,10 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: '',
       trim: true
+    },
+    subjects: {
+      type: [String],
+      default: []
     }
   },
   {
