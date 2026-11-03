@@ -15,9 +15,9 @@ router.get('/', async (req, res) => {
     if (classId) {
       if (classId.includes(',')) {
         filter.classId = { $in: classId.split(',').map(s => s.trim()) };
-      } else if (classId === 'class-11' || classId === 'class-11-arts' || classId === 'class-11-sci') {
+      } else if (classId === 'class-11') {
         filter.classId = { $in: ['class-11', 'class-11-arts', 'class-11-sci'] };
-      } else if (classId === 'class-12' || classId === 'class-12-arts' || classId === 'class-12-sci') {
+      } else if (classId === 'class-12') {
         filter.classId = { $in: ['class-12', 'class-12-arts', 'class-12-sci'] };
       } else {
         filter.classId = classId;
@@ -97,7 +97,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/students - Create new student
 router.post('/', async (req, res) => {
   try {
-    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
+    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, enrollmentYear, registrationYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
 
     if (!name || !classId || !roll) {
       return res.status(400).json({
@@ -135,6 +135,7 @@ router.post('/', async (req, res) => {
       gender: gender?.trim() || 'Boy',
       enrollmentNo: enrollmentNo?.trim() || '',
       enrollmentYear: enrollmentYear?.trim() || '2026',
+      registrationYear: registrationYear?.trim() || '',
       guardian: guardian?.trim() || (father ? father.trim() : ''),
       father: father?.trim() || '',
       mother: mother?.trim() || '',
@@ -217,7 +218,7 @@ router.put('/bulk-attendance', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, enrollmentYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
+    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, enrollmentYear, registrationYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
 
     let student = await Student.findOne({ studentId: id });
     if (!student && id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -256,6 +257,7 @@ router.put('/:id', async (req, res) => {
     if (monthlyAttendance !== undefined) student.monthlyAttendance = monthlyAttendance;
     if (enrollmentNo !== undefined) student.enrollmentNo = enrollmentNo.trim();
     if (enrollmentYear !== undefined) student.enrollmentYear = enrollmentYear.trim();
+    if (registrationYear !== undefined) student.registrationYear = registrationYear.trim();
     if (subjects !== undefined && Array.isArray(subjects)) student.subjects = subjects;
 
     await student.save();
