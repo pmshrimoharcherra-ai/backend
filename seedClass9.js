@@ -35,8 +35,9 @@ const rawData = [
     "apaarId": "883497791378",
     "admissionDate": "17-04-2023",
     "admissionNo": "60",
-    "aadhaar": "4025 8338 1029",
+    "aadhaar": "4025 8387 1929",
     "caste": "OBC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -52,8 +53,9 @@ const rawData = [
     "apaarId": "186455417337",
     "admissionDate": "15-04-2024",
     "admissionNo": "74",
-    "aadhaar": "",
+    "aadhaar": "7120 0640 8850",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -71,6 +73,7 @@ const rawData = [
     "admissionNo": "40",
     "aadhaar": "3343 9845 8625",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -86,8 +89,9 @@ const rawData = [
     "apaarId": "398349079689",
     "admissionDate": "08-04-2023",
     "admissionNo": "61",
-    "aadhaar": "7115 4035 510",
+    "aadhaar": "7115 4035 5510",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -105,6 +109,7 @@ const rawData = [
     "admissionNo": "46",
     "aadhaar": "3423 5614 4791",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -120,8 +125,9 @@ const rawData = [
     "apaarId": "414894665077",
     "admissionDate": "05-04-2023",
     "admissionNo": "18",
-    "aadhaar": "9886 7077 7108",
+    "aadhaar": "9886 7077 7198",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -139,6 +145,7 @@ const rawData = [
     "admissionNo": "20",
     "aadhaar": "8216 7652 7080",
     "caste": "SC",
+    "address": "Laltilla",
     "status": "Enrolled"
   },
   {
@@ -156,6 +163,7 @@ const rawData = [
     "admissionNo": "24",
     "aadhaar": "6955 8062 1306",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -173,6 +181,7 @@ const rawData = [
     "admissionNo": "51",
     "aadhaar": "8469 2420 3861",
     "caste": "OBC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -190,6 +199,7 @@ const rawData = [
     "admissionNo": "07",
     "aadhaar": "6567 0580 3501",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -207,6 +217,7 @@ const rawData = [
     "admissionNo": "36",
     "aadhaar": "2345 2578 8278",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -224,6 +235,7 @@ const rawData = [
     "admissionNo": "09",
     "aadhaar": "8231 7220 4771",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -239,8 +251,9 @@ const rawData = [
     "apaarId": "793140609053",
     "admissionDate": "12-04-2023",
     "admissionNo": "53",
-    "aadhaar": "8839 7507 3607",
+    "aadhaar": "8839 7597 3607",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -258,6 +271,7 @@ const rawData = [
     "admissionNo": "12",
     "aadhaar": "7318 5165 2177",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -273,8 +287,9 @@ const rawData = [
     "apaarId": "587469269889",
     "admissionDate": "04-04-2023",
     "admissionNo": "04",
-    "aadhaar": "4154 5760 6025",
+    "aadhaar": "4154 5761 6095",
     "caste": "SC",
+    "address": "Kalyanpur",
     "status": "Enrolled"
   },
   {
@@ -290,8 +305,9 @@ const rawData = [
     "apaarId": "855503589841",
     "admissionDate": "03-04-2023",
     "admissionNo": "01",
-    "aadhaar": "5545 9602 7127",
+    "aadhaar": "9545 9602 7127",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -309,6 +325,7 @@ const rawData = [
     "admissionNo": "70",
     "aadhaar": "9899 0630 3494",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -326,6 +343,7 @@ const rawData = [
     "admissionNo": "43",
     "aadhaar": "7536 6544 6038",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -343,6 +361,7 @@ const rawData = [
     "admissionNo": "67",
     "aadhaar": "3121 4293 4309",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -360,6 +379,7 @@ const rawData = [
     "admissionNo": "32",
     "aadhaar": "5840 4487 0727",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -377,6 +397,7 @@ const rawData = [
     "admissionNo": "11",
     "aadhaar": "6993 6362 2626",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -394,6 +415,7 @@ const rawData = [
     "admissionNo": "10",
     "aadhaar": "9504 3274 8017",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -411,6 +433,7 @@ const rawData = [
     "admissionNo": "21",
     "aadhaar": "5457 3504 6447",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -445,6 +468,7 @@ const rawData = [
     "admissionNo": "58",
     "aadhaar": "3127 1220 5644",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -460,8 +484,9 @@ const rawData = [
     "apaarId": "326895741347",
     "admissionDate": "08-04-2023",
     "admissionNo": "42",
-    "aadhaar": "4270 0859 3115",
+    "aadhaar": "4270 9859 3115",
     "caste": "UR",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -479,6 +504,7 @@ const rawData = [
     "admissionNo": "54",
     "aadhaar": "4153 8247 5450",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -494,8 +520,9 @@ const rawData = [
     "apaarId": "284272082213",
     "admissionDate": "",
     "admissionNo": "",
-    "aadhaar": "",
+    "aadhaar": "3191 3088 1143",
     "caste": "UR",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -513,6 +540,7 @@ const rawData = [
     "admissionNo": "49",
     "aadhaar": "4113 7423 1401",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -530,6 +558,7 @@ const rawData = [
     "admissionNo": "05",
     "aadhaar": "5776 0705 7349",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -547,6 +576,7 @@ const rawData = [
     "admissionNo": "28",
     "aadhaar": "2953 9644 6106",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -564,6 +594,7 @@ const rawData = [
     "admissionNo": "19",
     "aadhaar": "3175 2284 3143",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -581,6 +612,7 @@ const rawData = [
     "admissionNo": "41",
     "aadhaar": "5636 8991 3030",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -598,6 +630,7 @@ const rawData = [
     "admissionNo": "47",
     "aadhaar": "6557 3206 0715",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -613,8 +646,9 @@ const rawData = [
     "apaarId": "473743968202",
     "admissionDate": "10-04-2023",
     "admissionNo": "45",
-    "aadhaar": "5672 1309 8434",
+    "aadhaar": "5672 1909 8434",
     "caste": "SC",
+    "address": "Amarpur",
     "status": "Enrolled"
   },
   {
@@ -632,6 +666,7 @@ const rawData = [
     "admissionNo": "02",
     "aadhaar": "6591 1038 6017",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -649,6 +684,7 @@ const rawData = [
     "admissionNo": "13",
     "aadhaar": "7927 4947 1678",
     "caste": "OBC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -681,8 +717,9 @@ const rawData = [
     "apaarId": "951696583173",
     "admissionDate": "",
     "admissionNo": "",
-    "aadhaar": "",
+    "aadhaar": "8407 4622 3538",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -717,6 +754,7 @@ const rawData = [
     "admissionNo": "25",
     "aadhaar": "6971 0476 8290",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -734,6 +772,7 @@ const rawData = [
     "admissionNo": "33",
     "aadhaar": "5514 3568 1853",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -751,6 +790,7 @@ const rawData = [
     "admissionNo": "57",
     "aadhaar": "2541 9440 0106",
     "caste": "UR",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -768,6 +808,7 @@ const rawData = [
     "admissionNo": "37",
     "aadhaar": "8724 0527 3347",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -785,6 +826,7 @@ const rawData = [
     "admissionNo": "65",
     "aadhaar": "2483 3544 7074",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -800,8 +842,9 @@ const rawData = [
     "apaarId": "502415695335",
     "admissionDate": "06-04-2023",
     "admissionNo": "29",
-    "aadhaar": "4001 3360 8786",
+    "aadhaar": "4001 3369 8786",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -817,8 +860,9 @@ const rawData = [
     "apaarId": "297989868277",
     "admissionDate": "05-04-2023",
     "admissionNo": "15",
-    "aadhaar": "",
+    "aadhaar": "6411 3660 6040",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -834,8 +878,9 @@ const rawData = [
     "apaarId": "110686317129",
     "admissionDate": "06-04-2023",
     "admissionNo": "35",
-    "aadhaar": "3926 0543 4366",
+    "aadhaar": "3926 0543 4369",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -868,8 +913,9 @@ const rawData = [
     "apaarId": "983524535288",
     "admissionDate": "05-05-2023",
     "admissionNo": "22",
-    "aadhaar": "5792 5219 7230",
+    "aadhaar": "5792 9219 7230",
     "caste": "SC",
+    "address": "Kamalnagar",
     "status": "Enrolled"
   },
   {
@@ -887,6 +933,7 @@ const rawData = [
     "admissionNo": "56",
     "aadhaar": "3331 6407 0810",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -902,8 +949,9 @@ const rawData = [
     "apaarId": "390851226220",
     "admissionDate": "06-04-2023",
     "admissionNo": "28",
-    "aadhaar": "",
+    "aadhaar": "4457 5924 0622",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -919,8 +967,9 @@ const rawData = [
     "apaarId": "758111526446",
     "admissionDate": "10-04-2023",
     "admissionNo": "48",
-    "aadhaar": "",
+    "aadhaar": "3544 6893 6546",
     "caste": "UR",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -936,8 +985,9 @@ const rawData = [
     "apaarId": "",
     "admissionDate": "24-06-2023",
     "admissionNo": "69",
-    "aadhaar": "",
+    "aadhaar": "7808 8150 5469",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -970,8 +1020,9 @@ const rawData = [
     "apaarId": "",
     "admissionDate": "04-04-2023",
     "admissionNo": "14",
-    "aadhaar": "",
+    "aadhaar": "8435 1330 4912",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -989,6 +1040,7 @@ const rawData = [
     "admissionNo": "29",
     "aadhaar": "9329 8910 3881",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1004,8 +1056,9 @@ const rawData = [
     "apaarId": "902122797118",
     "admissionDate": "04-04-2023",
     "admissionNo": "06",
-    "aadhaar": "",
+    "aadhaar": "7115 5851 9652",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1023,6 +1076,7 @@ const rawData = [
     "admissionNo": "23",
     "aadhaar": "9837 3725 7357",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1038,8 +1092,9 @@ const rawData = [
     "apaarId": "873475530754",
     "admissionDate": "02-05-2024",
     "admissionNo": "76",
-    "aadhaar": "",
+    "aadhaar": "6230 9658 4984",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1055,8 +1110,9 @@ const rawData = [
     "apaarId": "695255034545",
     "admissionDate": "25-04-2023",
     "admissionNo": "64",
-    "aadhaar": "",
+    "aadhaar": "8013 4281 7810",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1091,6 +1147,7 @@ const rawData = [
     "admissionNo": "08",
     "aadhaar": "4631 6478 9006",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1106,8 +1163,9 @@ const rawData = [
     "apaarId": "994859904653",
     "admissionDate": "06-04-2023",
     "admissionNo": "31",
-    "aadhaar": "",
+    "aadhaar": "5188 7966 5895",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1123,8 +1181,9 @@ const rawData = [
     "apaarId": "784500769129",
     "admissionDate": "08-04-2023",
     "admissionNo": "38",
-    "aadhaar": "8112 9721 1400",
+    "aadhaar": "8112 9121 1400",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1142,6 +1201,7 @@ const rawData = [
     "admissionNo": "30",
     "aadhaar": "6115 3850 5700",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1193,6 +1253,7 @@ const rawData = [
     "admissionNo": "01",
     "aadhaar": "6250 2855 8033",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1227,6 +1288,7 @@ const rawData = [
     "admissionNo": "03",
     "aadhaar": "9515 4873 3415",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1244,6 +1306,7 @@ const rawData = [
     "admissionNo": "04",
     "aadhaar": "9927 9826 6964",
     "caste": "SC",
+    "address": "Kamalnagar, Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1261,6 +1324,7 @@ const rawData = [
     "admissionNo": "05",
     "aadhaar": "8294 4658 8325",
     "caste": "UR",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1278,6 +1342,7 @@ const rawData = [
     "admissionNo": "06",
     "aadhaar": "4013 7623 3501",
     "caste": "UR",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1312,6 +1377,7 @@ const rawData = [
     "admissionNo": "08",
     "aadhaar": "8624 2774 2852",
     "caste": "SC",
+    "address": "Champlai, Teliamura",
     "status": "Enrolled"
   },
   {
@@ -1329,6 +1395,7 @@ const rawData = [
     "admissionNo": "09",
     "aadhaar": "8245 4742 7400",
     "caste": "SC",
+    "address": "Champlai. Madhya Krishnapur, Teliamura",
     "status": "Enrolled"
   },
   {
@@ -1363,6 +1430,7 @@ const rawData = [
     "admissionNo": "11",
     "aadhaar": "8195 2545 8299",
     "caste": "SC",
+    "address": "Krishnapur, Teliamura",
     "status": "Enrolled"
   },
   {
@@ -1380,6 +1448,7 @@ const rawData = [
     "admissionNo": "12",
     "aadhaar": "2050 4633 0465",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1397,6 +1466,7 @@ const rawData = [
     "admissionNo": "13",
     "aadhaar": "5704 2225 6970",
     "caste": "SC",
+    "address": "Kamalnagar",
     "status": "Enrolled"
   },
   {
@@ -1429,8 +1499,9 @@ const rawData = [
     "apaarId": "",
     "admissionDate": "13-04-2026",
     "admissionNo": "15",
-    "aadhaar": "5070 2624 4477",
+    "aadhaar": "5079 2624 4477",
     "caste": "UR",
+    "address": "Kamalnagar",
     "status": "Enrolled"
   },
   {
@@ -1448,6 +1519,7 @@ const rawData = [
     "admissionNo": "16",
     "aadhaar": "3264 3660 4728",
     "caste": "OBC",
+    "address": "Vill-Champlai, PO-Maiganga, Teliamura",
     "status": "Enrolled"
   },
   {
@@ -1499,6 +1571,7 @@ const rawData = [
     "admissionNo": "19",
     "aadhaar": "4385 7789 7315",
     "caste": "SC",
+    "address": "Champak Nagar",
     "status": "Enrolled"
   },
   {
@@ -1516,6 +1589,7 @@ const rawData = [
     "admissionNo": "20",
     "aadhaar": "7166 3564 4788",
     "caste": "OBC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1533,6 +1607,7 @@ const rawData = [
     "admissionNo": "21",
     "aadhaar": "5931 8332 5178",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1550,6 +1625,7 @@ const rawData = [
     "admissionNo": "22",
     "aadhaar": "3053 6856 6975",
     "caste": "UR",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1567,6 +1643,7 @@ const rawData = [
     "admissionNo": "23",
     "aadhaar": "4195 3238 1001",
     "caste": "SC",
+    "address": "Moharcherra",
     "status": "Enrolled"
   },
   {
@@ -1640,6 +1717,7 @@ const seedClass9 = async () => {
         admissionDate: item.admissionDate || '',
         admissionNo: item.admissionNo || '',
         caste: item.caste || '',
+        address: item.address || '',
         phone: item.phone || '',
         father: item.father || '',
         mother: item.mother || '',
