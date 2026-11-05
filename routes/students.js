@@ -48,10 +48,14 @@ router.get('/', async (req, res) => {
     }
 
     if (vocational === 'true') {
+      const vocRegex = /^(IT|ITeS|IT\/ITeS|IT & ITeS|Information Technology|Vocational.*)$/i;
       const vocConditions = [
         { sector: { $in: ['Sector 1', 'Sector 2'] } },
         { vocationalSector: { $in: ['Sector 1', 'Sector 2'] } },
-        { subjects: { $elemMatch: { $regex: /it|vocation/i } } }
+        { subjects: { $elemMatch: { $regex: vocRegex } } },
+        { optionalSubject: { $regex: vocRegex } },
+        { vocationalSubject: { $regex: vocRegex } },
+        { sixthSubject: { $regex: vocRegex } }
       ];
       if (filter.$or) {
         filter.$and = [{ $or: filter.$or }, { $or: vocConditions }];
