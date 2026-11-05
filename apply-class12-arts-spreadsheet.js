@@ -21,12 +21,12 @@ const rawData = `1	Tapas Biswas	Dohai Biswas	Sumitra Biswas	26-10-2008	14-06-202
 12	Krishnandu Sarkar	Krishnadhan Sarkar	Sabita Sarkar	10-02-2009	12-06-2025	2	2990 7083 1367	Kamalnagar	SC	6009840959	31202508142/2023	Bengali, English, Political Science, Education, History	2025
 13	Susmita Biswas	Uttam Biswas	Pushpa Biswas	25-05-2008	13-06-2025	3	5550 0245 0647	Kamalnagar	SC	9366457914	32202508099/2023	Bengali, English, Political Science, Education, History	2025
 14	Sunali das	Bishu Das	Jhuma Das	20-01-2009	13-06-2025	4	6117 1472 8631	Kamalnagar	SC	9863346840	32202508090/2023	Bengali, English, Political Science, Education, History	2025
-15	Bidyasree Das	Bikash Das	Titu Rani Das	28-05-2008	13-06-2025	5	9031 5278 6215	Moharchera	SC	8974646788	32202508093/2023	Bengali, English, Political Science, Education, History	2025
+15	Bidyasree Das	Bikash Das	Titu Rani Das	28-05-2008	13-06-2025	5	9031 5278 6215	Moharchera	SC	8974646788	32202508093/2023	Bengali, English, Political Science, Education, History, IT	2025
 16	Abhijit Biswas	Sajal Biswas	Archana Biswas	11-11-2008	13-06-2025	8	8379 9073 0370	Moharchera, Kamalnagar	SC		31202508101/2023	Bengali, English, Political Science, History, Philosophy	2025
 17	Subham Das	Sankar Das	Kalpana Das	31-07-2008	13-06-2025	9	4588 1748 1941	Moharchera	SC	9362676382	31202508121/2023	Bengali, English, Political Science, History, Philosophy, IT	2025
 18	Joydip Dhar	Dilip Dhar	Pranati Datta Dhar	10-11-2009	13-06-2025	10	3084 2019 7240	Kamalnagar	General		31202508214/2023	Bengali, English, Political Science, Education, History	2025
 19	Subham Das	Ananta Das	Champa Sarkar Das	01-01-2009	13-06-2025	11	9348 5777 3847	Kamalnagar	SC	9863171438	31202508087/2023	Bengali, English, Political Science, Education, History, IT	2025
-20	Sumit Biswas	Amarjit Biswas	Radha Biswas	27-03-2009	13-06-2025	12	5838 7277 4663	Moharchera	SC	9077608631	31202508095/2023	Bengali, English, Political Science, Education, History	2025
+20	Sumit Biswas	Amarjit Biswas	Radha Biswas	27-03-2009	13-06-2025	12	5838 7277 4663	Moharchera	SC	9077608631	31202508095/2023	Bengali, English, Political Science, Education, History, IT	2025
 21	Swastika Das	Indrajit Das	Shilpi Rani Das	24-07-2008	13-06-2025	14	2281 8642 9583	Moharchera	SC	8837253806	32202508111/2023	Bengali, English, Political Science, History, Philosophy, IT	2025
 22	Anamika Biswas	Satyaraj Biswas	Mamata Biswas	01-09-2008	13-06-2025	15	6432 2271 4786	Kamalnagar	SC	6009182317	32202508152/2023	Bengali, English, Political Science, Education, History	2025
 23	Puja Nama	Ninu Nama	Namita Nama	17-08-2008	13-06-2025	16	9907 0330 4367	Uttar Kamalnagar	SC	9863662267	32202508127/2023	Bengali, English, Political Science, Education, History	2025

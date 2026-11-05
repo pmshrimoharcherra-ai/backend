@@ -6,10 +6,10 @@ const router = express.Router();
 // Helper to sanitize / format student roll and ID
 const formatRoll = (roll) => String(roll).trim().padStart(2, '0');
 
-// GET /api/students - Retrieve students (with optional classId and search filters)
+// GET /api/students - Retrieve students (with optional classId, search, vocational and sector filters)
 router.get('/', async (req, res) => {
   try {
-    const { classId, search } = req.query;
+    const { classId, search, vocational, sector } = req.query;
     const filter = {};
 
     if (classId) {
@@ -45,6 +45,35 @@ router.get('/', async (req, res) => {
         { admissionNo: regex },
         { address: regex }
       ];
+    }
+
+    if (vocational === 'true') {
+      const vocConditions = [
+        { sector: { $in: ['Sector 1', 'Sector 2'] } },
+        { vocationalSector: { $in: ['Sector 1', 'Sector 2'] } },
+        { subjects: { $elemMatch: { $regex: /it|vocation/i } } }
+      ];
+      if (filter.$or) {
+        filter.$and = [{ $or: filter.$or }, { $or: vocConditions }];
+        delete filter.$or;
+      } else {
+        filter.$or = vocConditions;
+      }
+    }
+
+    if (sector && sector !== 'all') {
+      const secConditions = [
+        { sector: sector },
+        { vocationalSector: sector }
+      ];
+      if (filter.$and) {
+        filter.$and.push({ $or: secConditions });
+      } else if (filter.$or) {
+        filter.$and = [{ $or: filter.$or }, { $or: secConditions }];
+        delete filter.$or;
+      } else {
+        filter.$or = secConditions;
+      }
     }
 
     const students = await Student.find(filter).sort({ classId: 1, rollNumber: 1, roll: 1 });
