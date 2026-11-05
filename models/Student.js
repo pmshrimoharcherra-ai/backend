@@ -146,6 +146,16 @@ const studentSchema = new mongoose.Schema(
     subjects: {
       type: [String],
       default: []
+    },
+    sector: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    vocationalSector: {
+      type: String,
+      default: '',
+      trim: true
     }
   },
   {
