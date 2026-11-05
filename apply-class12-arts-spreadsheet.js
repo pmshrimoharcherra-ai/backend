@@ -131,7 +131,7 @@ const rawData = `1	Tapas Biswas	Dohai Biswas	Sumitra Biswas	26-10-2008	14-06-202
 122	Bibek Acharjee	Bijan Acharjee	Gitasri Mallik Acharjee	29-09-2008	28-07-2025	127	6513 0322 4500	Moharchera	General	9366362637	31202508088/2023	Bengali, English, Political Science, Education, History	2025
 123	Prashanta	Swapan Biswas	Bina Biswas	01-01-2007	28-07-2025	128	5306 4091 4335	Moharchera	SC	6009562810	31202532102/2023	Bengali, English, Political Science, Education, History	2025
 124	Ajit Sarkar	Madan Sarkar	Bina Sarkar	19-11-2008	28-07-2025	129	6367 5838 7105	Uttar Kamalnagar	SC	9366862396	31202508096/2023	Bengali, English, Political Science, Education, History	2025
-125	Sayam Roy	Swapan Kumar Roy	Bulti Deb Roy	17-10-2008	28-07-2025	130	5827 2674 5533	Moharchera	SC	9362773622	31202508192/2023	Bengali, English, Political Science, Education, History, IT	2025
+125	Sayam Roy	Swapan Kumar Roy	Bulti Deb Roy	17-10-2008	28-07-2025	130	5827 2674 5533	Moharchera	SC	9362773622	31202508192/2023	Bengali, English, Political Science, Education, History	2025
 126	Mintu Biswas	Hara Krishna Biswas	Rupali Sarkar Biswas	01-06-2008	28-07-2025	131	8425 4501 8668	Moharchera	SC	8787670517	31202508141/2023	Bengali, English, Political Science, Education, History	2025
 127	Sayan Deb	Dwip Narayan Deb	Laxmi Deb	24-12-2008	28-07-2025	132	3699 7585 5638	Moharchera	General	6009492216	31202508134/2023	Bengali, English, Political Science, Education, History	2025
 128	Joydip Mandal	Mahadeb Mandal	Samhita Sutradhar Mandal	16-10-2007	28-07-2025	133	4086 9965 1669	Moharchera	SC	9293711081	31202416743/2023	Bengali, English, Political Science, Education, History	2025
