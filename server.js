@@ -12,6 +12,7 @@ import galleryRoutes from './routes/gallery.js';
 import teacherRoutes from './routes/teachers.js';
 import noticeRoutes from './routes/notices.js';
 import examinationRoutes from './routes/examinations.js';
+import workingReportRoutes from './routes/workingReports.js';
 
 // Force Node.js to prioritize IPv4 over IPv6 to prevent MongoDB Atlas ETIMEDOUT on NAT64/dual-stack networks
 if (dns.setDefaultResultOrder) {
@@ -49,6 +50,7 @@ app.use('/api/holidays', holidayRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/notices', noticeRoutes);
 app.use('/api/examinations', examinationRoutes);
+app.use('/api/working-reports', workingReportRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
