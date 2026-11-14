@@ -10,7 +10,8 @@ const DB_NAME = process.env.DB_NAME || 'school_erp';
 export const OFFICIAL_TEACHERS = [
   { 
     slNo: 1, 
-    teacherId: 'TR45208338', 
+    teacherId: 'TR45208338',
+    dob: '12/04/1987', 
     name: 'Joydeb Debnath', 
     role: 'PGT Senior Faculty', 
     subject: 'Mathematics & Physical Science', 
@@ -22,7 +23,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 2, 
-    teacherId: 'TP00693724', 
+    teacherId: 'TP00693724',
+    dob: '08/02/1990', 
     name: 'Riti Debbarma', 
     role: 'TGT Faculty', 
     subject: 'Kokborok & Regional Languages', 
@@ -34,7 +36,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 3, 
-    teacherId: 'TP12999252', 
+    teacherId: 'TP12999252',
+    dob: '15/07/1984', 
     name: 'Gita Das', 
     role: 'Senior Faculty', 
     subject: 'Life Science & Biology', 
@@ -46,7 +49,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 4, 
-    teacherId: 'TP40548371', 
+    teacherId: 'TP40548371',
+    dob: '22/11/1986', 
     name: 'Rakhi Rudra Paul', 
     role: 'TGT Faculty', 
     subject: 'Bengali Literature & Language', 
@@ -58,7 +62,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 5, 
-    teacherId: 'TP41073978', 
+    teacherId: 'TP41073978',
+    dob: '15/05/1985', 
     name: 'Soma Sarkar', 
     role: 'Faculty Member', 
     subject: 'English & Humanities', 
@@ -70,7 +75,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 6, 
-    teacherId: 'TP41160956', 
+    teacherId: 'TP41160956',
+    dob: '19/09/1988', 
     name: 'Joly Majumder', 
     role: 'Faculty Member', 
     subject: 'Mathematics', 
@@ -82,7 +88,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 7, 
-    teacherId: 'TP69529790', 
+    teacherId: 'TP69529790',
+    dob: '07/03/1991', 
     name: 'Subarna Sarkar', 
     role: 'Faculty Member', 
     subject: 'Social Studies & History', 
@@ -94,7 +101,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 8, 
-    teacherId: 'TR02672728', 
+    teacherId: 'TR02672728',
+    dob: '14/08/1984', 
     name: 'Rajib Sarkar', 
     role: 'Senior Faculty', 
     subject: 'Chemistry & Science Lab', 
@@ -106,7 +114,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 9, 
-    teacherId: 'TR05821328', 
+    teacherId: 'TR05821328',
+    dob: '05/10/1988', 
     name: 'Minakshi Sarkar', 
     role: 'Faculty Member', 
     subject: 'Geography & Environmental Studies', 
@@ -118,7 +127,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 10, 
-    teacherId: 'TR49491164', 
+    teacherId: 'TR49491164',
+    dob: '18/06/1989', 
     name: 'Rupa Das', 
     role: 'Teacher-In-Charge / H.M.', 
     subject: 'School Administration & Social Science', 
@@ -130,7 +140,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 11, 
-    teacherId: 'TP22856391', 
+    teacherId: 'TP22856391',
+    dob: '23/12/1983', 
     name: 'Sanjit Banik', 
     role: 'Faculty Member', 
     subject: 'Commerce & Accountancy', 
@@ -142,7 +153,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 12, 
-    teacherId: 'TR02672782', 
+    teacherId: 'TR02672782',
+    dob: '24/09/1988', 
     name: 'Mamata Biswas', 
     role: 'Faculty Member', 
     subject: 'Bengali & Cultural In-Charge', 
@@ -154,7 +166,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 13, 
-    teacherId: 'TR76404582', 
+    teacherId: 'TR76404582',
+    dob: '04/07/1986', 
     name: 'Sujit Debnath', 
     role: 'Physical Education Teacher (PET)', 
     subject: 'Physical Education, Yoga & Sports', 
@@ -166,7 +179,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 14, 
-    teacherId: 'TP43381101', 
+    teacherId: 'TP43381101',
+    dob: '16/03/1982', 
     name: 'Debamoy Chakraborty', 
     role: 'PGT', 
     subject: 'Chemistry', 
@@ -178,7 +192,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 15, 
-    teacherId: 'TP13217757', 
+    teacherId: 'TP13217757',
+    dob: '11/11/1989', 
     name: 'Rama Debbarma', 
     role: 'Faculty Member', 
     subject: 'Kokborok & Tribal Heritage', 
@@ -190,7 +205,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 16, 
-    teacherId: 'TR65553969', 
+    teacherId: 'TR65553969',
+    dob: '29/01/1990', 
     name: 'Anirban Sil', 
     role: 'ICT Coordinator / Computer Faculty', 
     subject: 'Computer Science & AI', 
@@ -202,7 +218,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 17, 
-    teacherId: 'TR94841403', 
+    teacherId: 'TR94841403',
+    dob: '03/05/1987', 
     name: 'Sangita Das', 
     role: 'Faculty Member', 
     subject: 'Fine Arts, Craft & SUPW', 
@@ -214,7 +231,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 18, 
-    teacherId: 'TR95081566', 
+    teacherId: 'TR95081566',
+    dob: '17/10/1985', 
     name: 'Krishna Kamal Debnath', 
     role: 'PGT Faculty', 
     subject: 'Physics & STEM Coordinator', 
@@ -226,7 +244,8 @@ export const OFFICIAL_TEACHERS = [
   },
   { 
     slNo: 19, 
-    teacherId: 'TR96957895', 
+    teacherId: 'TR96957895',
+    dob: '25/08/1984', 
     name: 'Ranjit Sarkar', 
     role: 'Faculty Member', 
     subject: 'General Science & Eco Club', 

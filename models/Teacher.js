@@ -45,6 +45,10 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       default: 'B.Ed. / Post Graduate'
     },
+    dob: {
+      type: String,
+      default: ''
+    },
     joiningYear: {
       type: String,
       default: '2020'

@@ -45,7 +45,7 @@ router.get('/:id', async (req, res) => {
 // POST create teacher
 router.post('/', async (req, res) => {
   try {
-    const { slNo, teacherId, name, role, subject, department, phone, email, status, qualification, password, assignedClassId, assignedClassName } = req.body;
+    const { slNo, teacherId, name, role, subject, department, phone, email, status, qualification, dob, password, assignedClassId, assignedClassName } = req.body;
 
     if (!teacherId || !name) {
       return res.status(400).json({ success: false, message: 'Teacher ID and Name are required' });
@@ -72,6 +72,7 @@ router.post('/', async (req, res) => {
       email: email || '',
       status: status || 'Active Faculty',
       qualification: qualification || 'B.Ed. / Post Graduate',
+      dob: dob ? String(dob).trim() : '',
       password: generatedPassword,
       assignedClassId: assignedClassId || '',
       assignedClassName: assignedClassName || '',
@@ -105,6 +106,17 @@ router.put('/:id', async (req, res) => {
 
     if (!teacher) {
       return res.status(404).json({ success: false, message: 'Teacher not found' });
+    }
+
+    // Check duplicate Teacher ID if updating ID
+    if (updateData.teacherId && updateData.teacherId !== teacher.teacherId) {
+      const existing = await Teacher.findOne({ teacherId: updateData.teacherId });
+      if (existing && String(existing._id) !== String(teacher._id)) {
+        return res.status(400).json({
+          success: false,
+          message: `Teacher ID "${updateData.teacherId}" is already assigned to ${existing.name}`
+        });
+      }
     }
 
     // Auto-update password if name or subject changed and no explicit password was sent

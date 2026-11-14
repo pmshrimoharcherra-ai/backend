@@ -523,4 +523,142 @@ router.post('/student-forgot-password', async (req, res) => {
   }
 });
 
+// POST /api/auth/teacher-verify-credentials (Verify National Teacher ID & DOB)
+router.post('/teacher-verify-credentials', async (req, res) => {
+  try {
+    const { teacherId, dob } = req.body;
+    if (!teacherId || !dob) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide both your Government / National Teacher ID and Date of Birth.'
+      });
+    }
+
+    const cleanId = String(teacherId).trim().toUpperCase();
+    const cleanDob = normalizeDate(dob);
+
+    const teacher = await Teacher.findOne({
+      $or: [
+        { teacherId: cleanId },
+        { email: new RegExp(`^${cleanId}$`, 'i') }
+      ]
+    });
+
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: `No faculty record found for Teacher ID "${teacherId}". Please verify your Government / National Teacher ID.`
+      });
+    }
+
+    const teacherDobNorm = normalizeDate(teacher.dob);
+    if (!teacherDobNorm || teacherDobNorm !== cleanDob) {
+      return res.status(400).json({
+        success: false,
+        message: 'Date of Birth does not match school faculty records for this Teacher ID.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Faculty credentials verified successfully!',
+      teacher: {
+        id: teacher._id,
+        teacherId: teacher.teacherId,
+        name: teacher.name,
+        role: teacher.role,
+        subject: teacher.subject,
+        department: teacher.department,
+        email: teacher.email
+      }
+    });
+  } catch (error) {
+    console.error('Teacher verify credentials error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while verifying faculty credentials.'
+    });
+  }
+});
+
+// POST /api/auth/teacher-reset-password (Change Teacher Password)
+router.post('/teacher-reset-password', async (req, res) => {
+  try {
+    const { teacherId, dob, newPassword } = req.body;
+    if (!teacherId || !dob || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide Teacher ID, Date of Birth, and the new password.'
+      });
+    }
+
+    if (String(newPassword).trim().length < 4) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 4 characters long.'
+      });
+    }
+
+    const cleanId = String(teacherId).trim().toUpperCase();
+    const cleanDob = normalizeDate(dob);
+
+    const teacher = await Teacher.findOne({
+      $or: [
+        { teacherId: cleanId },
+        { email: new RegExp(`^${cleanId}$`, 'i') }
+      ]
+    });
+
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: `Teacher record not found for "${teacherId}".`
+      });
+    }
+
+    const teacherDobNorm = normalizeDate(teacher.dob);
+    if (!teacherDobNorm || teacherDobNorm !== cleanDob) {
+      return res.status(400).json({
+        success: false,
+        message: 'Date of Birth does not match school faculty records for this Teacher ID.'
+      });
+    }
+
+    const cleanNewPassword = String(newPassword).trim();
+
+    // 1. Update Teacher collection password (plain string for admin display & login)
+    teacher.password = cleanNewPassword;
+    await teacher.save();
+
+    // 2. If a corresponding User record exists, update user password
+    const searchConditions = [{ teacherId: teacher.teacherId }];
+    if (teacher.email) {
+      searchConditions.push({ email: teacher.email.toLowerCase() });
+    }
+    const linkedUser = await User.findOne({ $or: searchConditions });
+
+    if (linkedUser) {
+      linkedUser.password = cleanNewPassword;
+      await linkedUser.save();
+    }
+
+    return res.json({
+      success: true,
+      message: `Password for ${teacher.name} has been updated successfully!`,
+      teacher: {
+        id: teacher._id,
+        teacherId: teacher.teacherId,
+        name: teacher.name,
+        newPassword: cleanNewPassword
+      }
+    });
+  } catch (error) {
+    console.error('Teacher reset password error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error while resetting teacher password.'
+    });
+  }
+});
+
 export default router;
