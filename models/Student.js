@@ -108,6 +108,11 @@ const studentSchema = new mongoose.Schema(
       default: '',
       trim: true
     },
+    registrationNo: {
+      type: String,
+      default: '',
+      trim: true
+    },
     enrollmentYear: {
       type: String,
       default: '2026',

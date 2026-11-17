@@ -167,6 +167,7 @@ router.post('/', async (req, res) => {
       rollNumber: rollNum,
       gender: gender?.trim() || 'Boy',
       enrollmentNo: enrollmentNo?.trim() || '',
+      registrationNo: registrationNo?.trim() || '',
       enrollmentYear: enrollmentYear?.trim() || '2026',
       registrationYear: registrationYear?.trim() || '',
       guardian: guardian?.trim() || (father ? father.trim() : ''),
@@ -251,7 +252,7 @@ router.put('/bulk-attendance', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, enrollmentYear, registrationYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
+    const { name, roll, classId, className, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, status, attendance, monthlyAttendance, enrollmentNo, registrationNo, enrollmentYear, registrationYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
 
     let student = await Student.findOne({ studentId: id });
     if (!student && id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -289,6 +290,7 @@ router.put('/:id', async (req, res) => {
     if (attendance !== undefined) student.attendance = attendance;
     if (monthlyAttendance !== undefined) student.monthlyAttendance = monthlyAttendance;
     if (enrollmentNo !== undefined) student.enrollmentNo = enrollmentNo.trim();
+    if (registrationNo !== undefined) student.registrationNo = registrationNo.trim();
     if (enrollmentYear !== undefined) student.enrollmentYear = enrollmentYear.trim();
     if (registrationYear !== undefined) student.registrationYear = registrationYear.trim();
     if (subjects !== undefined && Array.isArray(subjects)) student.subjects = subjects;
