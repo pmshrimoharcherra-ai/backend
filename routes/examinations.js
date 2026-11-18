@@ -54,6 +54,30 @@ router.post('/save', async (req, res) => {
       });
     }
 
+    let finalMarks = Array.isArray(marks) ? [...marks] : [];
+
+    // If an existing record exists, merge student marks so partial submissions never erase other students
+    const existing = await ExamRecord.findOne({ classId, examTerm, subject });
+    if (existing && Array.isArray(existing.marks) && existing.marks.length > 0 && finalMarks.length > 0) {
+      const incomingMap = new Map();
+      finalMarks.forEach((m) => {
+        if (m && m.studentId) incomingMap.set(String(m.studentId), m);
+      });
+
+      const mergedMarks = existing.marks.map((oldM) => {
+        const sid = String(oldM.studentId);
+        if (incomingMap.has(sid)) {
+          const updated = incomingMap.get(sid);
+          incomingMap.delete(sid);
+          return updated;
+        }
+        return oldM;
+      });
+
+      incomingMap.forEach((newM) => mergedMarks.push(newM));
+      finalMarks = mergedMarks;
+    }
+
     const payload = {
       classId,
       className: className || '',
@@ -62,7 +86,7 @@ router.post('/save', async (req, res) => {
       maxMarks: Number(maxMarks) || (examTerm.includes('40') ? 40 : 80),
       teacherId: teacherId || '',
       teacherName: teacherName || 'Faculty Member',
-      marks: Array.isArray(marks) ? marks : [],
+      marks: finalMarks,
       academicYear: academicYear || '2026-2027',
       isLocked: req.body.isLocked !== undefined ? req.body.isLocked : true,
       submittedAt: new Date()

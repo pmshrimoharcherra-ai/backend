@@ -32,6 +32,7 @@ router.get('/', async (req, res) => {
         { roll: regex },
         { studentId: regex },
         { enrollmentNo: regex },
+        { registrationNo: regex },
         { guardian: regex },
         { father: regex },
         { mother: regex },
@@ -130,7 +131,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/students - Create new student
 router.post('/', async (req, res) => {
   try {
-    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, enrollmentYear, registrationYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
+    const { name, classId, className, roll, guardian, father, mother, aadhaar, penNumber, apaarId, dob, phone, attendance, status, studentId, enrollmentNo, registrationNo, enrollmentYear, registrationYear, gender, caste, admissionDate, admissionNo, address, subjects } = req.body;
 
     if (!name || !classId || !roll) {
       return res.status(400).json({
