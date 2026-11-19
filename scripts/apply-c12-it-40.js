@@ -59,7 +59,10 @@ const nameAliases = {
 };
 
 async function run() {
-  const uri = process.env.MONGODB_URI || 'mongodb+srv://schoolerp:Mohar2026@cluster0.wajxav6.mongodb.net/school_erp';
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error('MONGODB_URI is not set in environment or .env');
+  }
   await mongoose.connect(uri);
   const Student = mongoose.connection.collection('students');
   const c12 = await Student.find({ classId: { $in: ['class-12-arts', 'class-12-sci'] } }).toArray();

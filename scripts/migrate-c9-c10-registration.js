@@ -1,7 +1,12 @@
+import 'dotenv/config';
 import mongoose from 'mongoose';
 
 async function run() {
-  await mongoose.connect('mongodb+srv://schoolerp:Mohar2026@cluster0.wajxav6.mongodb.net/school_erp');
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error('MONGODB_URI is not set in environment or .env');
+  }
+  await mongoose.connect(uri);
   const Student = mongoose.connection.collection('students');
 
   const students = await Student.find({
