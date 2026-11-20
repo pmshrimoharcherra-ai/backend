@@ -202,7 +202,14 @@ router.post('/login', async (req, res) => {
           subject: teacher?.subject || '',
           assignedClassId: teacher?.assignedClassId || '',
           assignedClassName: teacher?.assignedClassName || '',
-          teachingAssignments: teacher?.teachingAssignments || []
+          teachingAssignments: teacher?.teachingAssignments || [],
+          signature: teacher?.signature || '',
+          department: teacher?.department || '',
+          phone: teacher?.phone || '',
+          dob: teacher?.dob || '',
+          qualification: teacher?.qualification || '',
+          status: teacher?.status || 'Active Faculty',
+          joiningYear: teacher?.joiningYear || '2020'
         }
       });
     }
@@ -331,7 +338,14 @@ router.get('/me', async (req, res) => {
           subject: teacher.subject || '',
           assignedClassId: teacher.assignedClassId || '',
           assignedClassName: teacher.assignedClassName || '',
-          teachingAssignments: teacher.teachingAssignments || []
+          teachingAssignments: teacher.teachingAssignments || [],
+          signature: teacher.signature || '',
+          department: teacher.department || '',
+          phone: teacher.phone || '',
+          dob: teacher.dob || '',
+          qualification: teacher.qualification || '',
+          status: teacher.status || 'Active Faculty',
+          joiningYear: teacher.joiningYear || '2020'
         }
       });
     }

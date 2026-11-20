@@ -65,6 +65,10 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    signature: {
+      type: String,
+      default: ''
+    },
     teachingAssignments: [
       {
         classId: { type: String, default: '' },

@@ -19,6 +19,31 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET class teacher by classId
+router.get('/class-teacher/:classId', async (req, res) => {
+  try {
+    const { classId } = req.params;
+    const cid = String(classId || '').trim().toLowerCase();
+    const candidates = [cid];
+    if (cid === 'class-11' || cid === 'class-11-arts' || cid === 'class-11-sci') {
+      candidates.push('class-11', 'class-11-arts', 'class-11-sci');
+    }
+    if (cid === 'class-12' || cid === 'class-12-arts' || cid === 'class-12-sci') {
+      candidates.push('class-12', 'class-12-arts', 'class-12-sci');
+    }
+    const teacher = await Teacher.findOne({
+      $or: [
+        { assignedClassId: { $in: candidates } },
+        { assignedClassName: new RegExp(cid.replace('class-', 'Class '), 'i') }
+      ]
+    });
+    res.json({ success: true, teacher: teacher || null });
+  } catch (error) {
+    console.error('Error fetching class teacher:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // GET single teacher by teacherId or _id
 router.get('/:id', async (req, res) => {
   try {
